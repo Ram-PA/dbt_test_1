@@ -3,7 +3,7 @@ sources:
   - name: dbt_test_1
     tables:
       - name: raw_table4
-        description: "Mapping to File1"
+        description: "Mapping to File4"
                             
         external:
           location: gs://dbt_test_1/File4.csv
@@ -22,6 +22,7 @@ sources:
             tests:
               - unique
               - not_null
+              
           - name: Ind_M1
             data_type: INTEGER
             description: "Month - 1 Indicator"
@@ -31,5 +32,93 @@ sources:
           - name: Ind_M3
             data_type: INTEGER
             description: "Month - 3 Indicator"
+
+      - name: raw_table1
+        description: "Mapping to File1"
+                            
+        external:
+          location: gs://dbt_test_1/File1.csv
+          options:
+            format: csv
+            skip_leading_rows: 1
+          
+        
+        # Specify ALL column names + datatypes.
+        # Column order must match for CSVs, column names must match for other formats.
+        # Some databases support schema inference.
+        columns:
+          - name: ID
+            data_type: INTEGER
+            description: "Party ID"
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  to: source('dbt_test_1', 'raw_table2')
+                  field: ID
+
+          - name: Amount
+            data_type: INTEGER
+            description: "Balance of the account"
+          - name: Ind_Latest
+            data_type: INTEGER
+            description: "Latest Indicator"
+
+      - name: raw_table2
+        description: "Mapping to File2"
+                            
+        external:
+          location: gs://dbt_test_1/File2.csv
+          options:
+            format: csv
+            skip_leading_rows: 1
+          
+        
+        # Specify ALL column names + datatypes.
+        # Column order must match for CSVs, column names must match for other formats.
+        # Some databases support schema inference.
+        columns:
+          - name: ID
+            data_type: INTEGER
+            description: "Party ID"
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  to: source('dbt_test_1', 'raw_table3')
+                  field: ID
+
+          - name: Interest
+            data_type: INTEGER
+            description: "Interest"
+          - name: Type_of_Account
+            data_type: INTEGER
+            description: "Type of the account"        
       
+      - name: raw_table3
+        description: "Mapping to File3"
+                            
+        external:
+          location: gs://dbt_test_1/File3.csv
+          options:
+            format: csv
+            skip_leading_rows: 1
+          
+        
+        # Specify ALL column names + datatypes.
+        # Column order must match for CSVs, column names must match for other formats.
+        # Some databases support schema inference.
+        columns:
+          - name: ID
+            data_type: INTEGER
+            description: "Party ID"
+            tests:
+              - unique
+              - not_null
+          - name: OD
+            data_type: INTEGER
+            description: "Overraft Limit"
+          - name: Amount_OD_Used
+            data_type: INTEGER
+            description: "Amount of overdraft used"        
       
