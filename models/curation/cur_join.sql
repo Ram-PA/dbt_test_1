@@ -1,7 +1,7 @@
 -- depends_on: {{ ref('stg_table1') }}
 
 {{ config(
-    materialized='table',
+    materialized='incremental',
     partition_by={
       "field": "created_at",
       "data_type": "timestamp",
@@ -11,9 +11,9 @@
 )}}
 
 {%- set source_relation = adapter.get_relation(
-      database=source('dbt_test_1', 'raw_table1').database,
-      schema=source('dbt_test_1', 'raw_table1').schema,
-      identifier=source('dbt_test_1', 'raw_table1').name) -%}
+      database=source('dbt_test_2', 'raw_table1').database,
+      schema=source('dbt_test_2', 'raw_table1').schema,
+      identifier=source('dbt_test_2', 'raw_table1').name) -%}
 
 {% set table_exists=source_relation is not none %}
 
@@ -50,7 +50,15 @@ select * from final)
 {% else %}
 {{ log("Table does not exist", info=True) }}
 with final as (
-select * from {{ref('cur_table4')}}    
+select
+        ID,
+        CURRENT_DATETIME as created_at,
+        null as Amount,
+        Ind_M1 as Ind_Latest,
+        Ind_M2 as Ind_M1,
+        Ind_M3 as Ind_M2,
+        null as Ind_M3
+    from {{ref('cur_table4')}}   
 )
 
 select * from final

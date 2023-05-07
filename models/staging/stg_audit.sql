@@ -8,7 +8,7 @@ with audit as (
     {% for table_name in table_names -%}
     select
     '{{ table_name }}' as table_name,
-    (select count(*) from dbt_demo_two.{{ table_name }} ) as rec_count,
+    (select count(*) from dbt_test_1.{{ table_name }} ) as rec_count,
     CURRENT_DATE as created_at
     {%- if not loop.last %}
     union all

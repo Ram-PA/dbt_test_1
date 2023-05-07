@@ -1,12 +1,13 @@
 version: 2
 sources:
   - name: dbt_test_1
+    schema: dbt_test_1
     tables:
       - name: raw_table4
         description: "Mapping to File4"
                             
         external:
-          location: gs://dbt_test_1/File4.csv
+          location: gs://dbt_test_2/File4.csv
           options:
             format: csv
             skip_leading_rows: 1
@@ -33,11 +34,14 @@ sources:
             data_type: INTEGER
             description: "Month - 3 Indicator"
 
+  - name: dbt_test_2
+    schema: dbt_test_1
+    tables:
       - name: raw_table1
         description: "Mapping to File1"
                             
         external:
-          location: gs://dbt_test_1/File1.csv
+          location: gs://dbt_test_2/File1.csv
           options:
             format: csv
             skip_leading_rows: 1
@@ -54,7 +58,7 @@ sources:
               - unique
               - not_null
               - relationships:
-                  to: source('dbt_test_1', 'raw_table2')
+                  to: source('dbt_test_2', 'raw_table2')
                   field: ID
 
           - name: Amount
@@ -68,7 +72,7 @@ sources:
         description: "Mapping to File2"
                             
         external:
-          location: gs://dbt_test_1/File2.csv
+          location: gs://dbt_test_2/File2.csv
           options:
             format: csv
             skip_leading_rows: 1
@@ -85,7 +89,7 @@ sources:
               - unique
               - not_null
               - relationships:
-                  to: source('dbt_test_1', 'raw_table3')
+                  to: source('dbt_test_2', 'raw_table3')
                   field: ID
 
           - name: Interest
@@ -99,7 +103,7 @@ sources:
         description: "Mapping to File3"
                             
         external:
-          location: gs://dbt_test_1/File3.csv
+          location: gs://dbt_test_2/File3.csv
           options:
             format: csv
             skip_leading_rows: 1
