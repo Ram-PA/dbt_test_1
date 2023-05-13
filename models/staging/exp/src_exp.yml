@@ -1,39 +1,5 @@
 version: 2
 sources:
-  - name: dbt_test_1
-    schema: dbt_test_1
-    tables:
-      - name: raw_table4
-        description: "Mapping to File4"
-                            
-        external:
-          location: gs://dbt_test_2/File4.csv
-          options:
-            format: csv
-            skip_leading_rows: 1
-          
-        
-        # Specify ALL column names + datatypes.
-        # Column order must match for CSVs, column names must match for other formats.
-        # Some databases support schema inference.
-        columns:
-          - name: ID
-            data_type: INTEGER
-            description: "Party ID"
-            tests:
-              - unique
-              - not_null
-              
-          - name: Ind_M1
-            data_type: INTEGER
-            description: "Month - 1 Indicator"
-          - name: Ind_M2
-            data_type: INTEGER
-            description: "Month - 2 Indicator"
-          - name: Ind_M3
-            data_type: INTEGER
-            description: "Month - 3 Indicator"
-
   - name: dbt_test_2
     schema: dbt_test_1
     tables:
